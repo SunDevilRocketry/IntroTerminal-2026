@@ -21,19 +21,25 @@ class CLI:
                 print(f"{k}    ----    {self.getdocumentation(k)}")
         #1 argument case: list 
         elif len(arg) == 1:
-            print(f"{arg[0]}    ----    {self.getdocumentation(arg[0])}")
+            try:
+                print(f"{arg[0]}    ----    {self.getdocumentation(arg[0])}")
+            except:
+                print("\nError: Unrecognized function for help command\n")
         else:
             print("Error: incorrect argument count.\n")
-        print("")
         
 class DUMMY:
     def __init__(self):
         pass
-    def dummy(self):
-        print("dummy print")
+    def dummy(self,args):
+        if len(args) == 0:
+            print("dummy print")
+        else:
+            print("NO.")
+
     def dummy3(self,arg):
         if len(arg) != 3:
-            print("Error: incorrect argument count.\n\n Please Enter 3 arguments")
+            print("\nError: incorrect argument count.\nPlease Enter 3 arguments\n")
         else:
             print(f"{arg[0]} {arg[1]} {arg[2]}")
 
@@ -59,9 +65,14 @@ while True: # Super-Loop
     command = args[0]
     args.remove(args[0])
     if command == "exit":
-        print("Thank You for Using LeOS")
+        print("\nThank You for Using LeOS\n")
         break
     #run the function at the location of the hash
-    command_prompts[command](args)
+    try:
+        command_prompts[command](args)
+    except:
+        print("\nError: Unrecognized function \n")
+    
+
     
     
