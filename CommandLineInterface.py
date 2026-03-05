@@ -1,10 +1,12 @@
-class CLI:
+import terminalserial
+
+class CLI: 
     documentation = {}
     def __init__(self):
         self.documentation = {
-             "dummy": "A dummy argument to test the functionality of the help function",
-             "dummy3": "Another dummy argument to test the functionality of our code",
-             "help": "List of Available Commands, or one specific command"
+             "help": "List of Available Commands in the Command Line Interface (CLI) or one specific command",
+             "connect":"Connects a Serial Port to the CLI 'Connect <comport> <baud rate>'",
+             "get_ports":"Prints all available comports"
         }
         pass
     
@@ -27,31 +29,15 @@ class CLI:
                 print("\nError: Unrecognized function for help command\n")
         else:
             print("Error: incorrect argument count.\n")
-        
-class DUMMY:
-    def __init__(self):
-        pass
-    def dummy(self,args):
-        if len(args) == 0:
-            print("dummy print")
-        else:
-            print("NO.")
-
-    def dummy3(self,arg):
-        if len(arg) != 3:
-            print("\nError: incorrect argument count.\nPlease Enter 3 arguments\n")
-        else:
-            print(f"{arg[0]} {arg[1]} {arg[2]}")
 
 cli = CLI()
-dumdum = DUMMY()
+serial = terminalserial.SerialTerminal()
 
 command_prompts ={
      "help":cli.help,
-     "dummy":dumdum.dummy,
-     "dummy3":dumdum.dummy3
+     "connect":serial.connect,
+     "get_ports":serial.get_available_ports
     }
-
 
 if __name__ == "__main__":
 
@@ -70,11 +56,4 @@ if __name__ == "__main__":
             print("\nThank You for Using LeOS\n")
             break
         #run the function at the location of the hash
-        try:
-            command_prompts[command](args)
-        except:
-            print("\nError: Unrecognized function \n")
-    
-
-    
-    
+        command_prompts[command](args)

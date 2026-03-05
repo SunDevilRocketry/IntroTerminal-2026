@@ -18,13 +18,14 @@ class SerialTerminal:
         #pyserial write
         self.serialinfo.write(write_byte)
     
-    def connect(self, comport ,baudrate):
+    def connect(self, SerialParameters):
+        comport = SerialParameters[0]
+        baudrate = SerialParameters[1]
         #open com ports
-        open(comport,baudrate)
-
+        open(SerialParameters) #ask nick
         self.serialinfo = serial.Serial(comport, baudrate)
 
-    def get_available_ports(self):
+    def get_available_ports(self, args):
         ports = serial.tools.list_ports.comports()
         return ports
 
@@ -38,7 +39,7 @@ class SerialTerminal:
         return self.__comport
     
     def setBaudrate(self, baudrate):
-        self.__baudrate = baudrate\
+        self.__baudrate = baudrate
         
     def getBaudrate(self):
         return self.__baudrate
