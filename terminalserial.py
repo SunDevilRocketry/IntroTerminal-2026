@@ -22,7 +22,6 @@ class SerialTerminal:
         comport = SerialParameters[0]
         baudrate = SerialParameters[1]
         #open com ports
-        open(SerialParameters) #ask nick
         self.serialinfo = serial.Serial(comport, baudrate)
 
     def get_available_ports(self):
