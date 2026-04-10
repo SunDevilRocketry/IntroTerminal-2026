@@ -29,14 +29,23 @@ class CLI:
                 print("\nError: Unrecognized function for help command\n")
         else:
             print("Error: incorrect argument count.\n")
+    
+    def display_all_ports(self, arg):
+        ports = serial.get_available_ports()
+        print(ports)
+
+    def connect_helper(self, args):
+        comport = args[0]
+        baudrate = args[1]
+        serial.connect([comport, baudrate])
 
 cli = CLI()
 serial = terminalserial.SerialTerminal()
 
 command_prompts ={
      "help":cli.help,
-     "connect":serial.connect,
-     "get_ports":serial.get_available_ports
+     "connect":cli.connect_helper,
+     "get_ports":cli.display_all_ports
     }
 
 if __name__ == "__main__":

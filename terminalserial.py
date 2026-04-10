@@ -25,7 +25,7 @@ class SerialTerminal:
         open(SerialParameters) #ask nick
         self.serialinfo = serial.Serial(comport, baudrate)
 
-    def get_available_ports(self, args):
+    def get_available_ports(self):
         ports = serial.tools.list_ports.comports()
         return ports
 
