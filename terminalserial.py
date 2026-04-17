@@ -1,7 +1,7 @@
 #terminalserial.py
 import serial
 import serial.tools.list_ports
-
+import time
 
 class SerialTerminal:
     def __init__(self, comport = None, baudrate = None, timeout = None):
@@ -23,10 +23,17 @@ class SerialTerminal:
         baudrate = SerialParameters[1]
         #open com ports
         self.serialinfo = serial.Serial(comport, baudrate)
+        time.sleep(2) #claude goat code is too fast
+        self.serialinfo.write(b'\xFF')
+        answer = self.serialinfo.read(1)
+        if answer == b'\xFF':
+                print("Connected")
+        else:
+            print(answer)
 
     def get_available_ports(self):
         ports = serial.tools.list_ports.comports()
-        return ports
+        return ports[0].device
 
     def getSerialObject(self):
         return self.serialinfo
