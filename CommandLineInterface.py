@@ -1,36 +1,68 @@
-class commands:
+import terminalserial
+
+class CLI: 
     documentation = {}
     def __init__(self):
+        self.documentation = {
+             "help": "List of Available Commands in the Command Line Interface (CLI) or one specific command",
+             "connect":"Connects a Serial Port to the CLI 'Connect <comport> <baud rate>'",
+             "get_ports":"Prints all available comports"
+        }
         pass
-    def dummy(arg):
-        print("dummy print")
-    documentation["dummy"] = "A dummy argument to test the functionality of the help function"
-    def getdocumentation(key):
-        return commands.documentation[key]
-command_prompts = {} #Initial command serialization
-
-def help(arg):
+    
+    def getdocumentation(self,key):
+        return self.documentation[key]
+    
+    def help(self,arg):
         #no argument case: list all functions
         if len(arg) == 0: 
-             print(f"placeholder :D")
+            keys = list(command_prompts.keys())
+            
+            print(f"\nAvailable Command Prompts: \n")
+            for k in keys:
+                print(f"{k}    ----    {self.getdocumentation(k)}")
         #1 argument case: list 
-        if len(arg) == 1:
-             print(f"{arg[0]}:\n{commands.getdocumentation(arg[0])}")
-command_prompts["help"] = help
-command_prompts["dummy"] = commands.dummy
+        elif len(arg) == 1:
+            try:
+                print(f"{arg[0]}    ----    {self.getdocumentation(arg[0])}")
+            except:
+                print("\nError: Unrecognized function for help command\n")
+        else:
+            print("Error: incorrect argument count.\n")
+    
+    def display_all_ports(self, arg):
+        ports = serial.get_available_ports()
+        print(ports)
+
+    def connect_helper(self, args):
+        comport = args[0]
+        baudrate = args[1]
+        serial.connect([comport, baudrate])
+
+cli = CLI()
+serial = terminalserial.SerialTerminal()
+
+command_prompts ={
+     "help":cli.help,
+     "connect":cli.connect_helper,
+     "get_ports":cli.display_all_ports
+    }
+
+if __name__ == "__main__":
+
 #ask for user input
 #if input corresponds to key, run function stored at key values
 
-while True: # Super-Loop
-    userInput = input('')
-    #split command into arguments
-    args = userInput.split(' ')
-    command = args[0]
-    args.remove(args[0])
-    if command == "exit":
-        print("Exiting Program...")
-        break
-    #run the function at the location of the hash
-    command_prompts[command](args)
-    
-    
+    print("Welcome to LeOS")
+
+    while True: # Super-Loop
+        userInput = input('LeOS>> ')
+        #split command into arguments
+        args = userInput.split(' ')
+        command = args[0]
+        args.remove(args[0])
+        if command == "exit":
+            print("\nThank You for Using LeOS\n")
+            break
+        #run the function at the location of the hash
+        command_prompts[command](args)
